@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render,redirect, get_object_or_404 # type: ignore
 
 from .models import Cart, CartItem
 from store.models import Product
@@ -23,10 +23,10 @@ def add_cart(request, product_id):
     cart.save()
 
     try:
-        cart_item = cart.objects.get(product=product, cart = cart)
+        cart_item = CartItem.objects.get(product=product, cart = cart)
         cart_item.quantity += 1
         cart_item.save()
-    except Cart.DoesNotExist:
+    except CartItem.DoesNotExist:
         cart_item = CartItem.objects.create(
             product=product,
             quantity=1,
