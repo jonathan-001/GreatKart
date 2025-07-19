@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'category.context_processors.menu_links',  # Custom context processor for categories
+                'carts.context_processors.counter',
             ],
         },
     },
