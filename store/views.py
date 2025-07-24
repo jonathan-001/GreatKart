@@ -6,22 +6,38 @@ from category.models import Category
 from carts.views import _cart_id
 from carts.models import CartItem
 
+
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
+
+# look --->  pagination in both if and else statements
 
 def store(request,category_slug=None):
     categories = None
     products = None
-    if category_slug is not None:
+    if category_slug != None:
         categories = get_object_or_404(Category,slug=category_slug)
         products = Product.objects.filter(category = categories, is_available=True)
+
+        # pagination
+        paginator = Paginator(products, 6)  # Show 6 products per page
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
         
         # categories = Category.objects.filter(category_slug=category_slug)
         # products = Product.objects.filter(category__slug = category_slug, is_available=True)
     else:
-        products = Product.objects.filter(is_available=True)
+        products = Product.objects.filter(is_available=True).order_by('id')
+        # pagination
+        paginator = Paginator(products, 6)  # Show 6 products per page
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
+
+
     product_count = products.count()
     context = {
-        'products': products,
+        # 'products': products,
+        'products': paged_products,
         'product_count': product_count,
     }   
     return render(request, 'store/store.html', context)  
