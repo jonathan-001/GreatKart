@@ -48,7 +48,7 @@ def add_cart(request, product_id):
 
     if is_cart_item_exits:
         # cart_item = CartItem.objects.get(product=product, cart = cart)
-        cart_item = CartItem.objects.create(product=product, cart=cart)
+        cart_item = CartItem.objects.filter(product=product, cart=cart)
         # existing variations    db
         #current_variations      product_variation
         # item_id     db
